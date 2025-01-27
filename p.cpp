@@ -41,6 +41,7 @@ void remove_product(product *&products, int &size, int &capacity)
     cout << "please enter the name of the product you want to remove?" << endl;
     string a;
     cin >> a;
+    int c=0;
     for (int i = 0; i < size; i++)
     {
         if (a == products[i].name)
@@ -62,23 +63,30 @@ void remove_product(product *&products, int &size, int &capacity)
                 cin >> c;
                 products[i].inventory = products[i].inventory - c;
             }
+            c++;
         }
-        else
-        {
-            cout << "no product found with this name, try again" << endl;
-        }
+    
+    }
+    if(c==0){
+        cout<<"not found a game to remove with that name! \nplease try again\n";
     }
 }
 void find_product(product *&products, int &size, int &capacity)
 {
+    system("cls");
     cout<<"please enter the name of the product you want to find."<<endl;
     string a;
     cin>>a;
+    int b=0;
     for(int i=0;i<size;i++){
         if(products[i].name == a){
-            cout<< "your product has been founded!"
-                <<i+1<<"."<<products[i].name<<endl<<"category:"<<products[i].category<<endl<<"price:"<<products[i].price<<endl<<"inventory:"<<products[i].inventory;
+            cout<< "your product has been founded!\n"
+                <<i+1<<"."<<products[i].name<<endl<<"category:"<<products[i].category<<endl<<"price:"<<products[i].price<<endl<<"inventory:"<<products[i].inventory<<endl;
+                b++;
         }
+    }
+    if(b==0){
+        cout<<"no products found!"<<endl;
     }
 }
 void show_products(product *&products, int &size, int &capacity)
@@ -105,7 +113,7 @@ void show_products(product *&products, int &size, int &capacity)
 }
 void admin_menu(product *&products, int &size, int &capacity)
 {
-    system("cls");
+    // system("cls");
     cout << "1.add a product" << endl
          << "2.remove a product" << endl
          << "3.find a product" << endl
@@ -133,6 +141,9 @@ void admin_menu(product *&products, int &size, int &capacity)
     }
     case 3:
     {
+        find_product(products, size, capacity);
+        admin_menu(products, size, capacity);
+        break;
     }
     case 4:
     {
@@ -159,7 +170,7 @@ void admin_menu(product *&products, int &size, int &capacity)
 }
 void customer_menu()
 {
-    system("cls");
+    // system("cls");
     cout << "1.products inventory" << endl
          << "2.find a product" << endl
          << "3.top up wallet" << endl
@@ -198,6 +209,7 @@ void customer_menu()
     {
     }
     case 8:
+
     {
     }
     default:
