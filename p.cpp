@@ -24,7 +24,8 @@ void add_product(product *&products, int &size, int &capacity)
         products = newproducts;
     }
     cout << "please enter the details of the product which you want to add" << endl
-         <<"game-console-monitor-headset\n"<< "category: ";
+         << "game-console-monitor-headset\n"
+         << "category: ";
     cin >> products[size].category;
     cout << "name: ";
     cin >> products[size].name;
@@ -41,7 +42,7 @@ void remove_product(product *&products, int &size, int &capacity)
     cout << "please enter the name of the product you want to remove?" << endl;
     string a;
     cin >> a;
-    int c=0;
+    int c = 0;
     for (int i = 0; i < size; i++)
     {
         if (a == products[i].name)
@@ -65,29 +66,45 @@ void remove_product(product *&products, int &size, int &capacity)
             }
             c++;
         }
-    
     }
-    if(c==0){
-        cout<<"not found a game to remove with that name! \nplease try again\n";
+    if (c == 0)
+    {
+        cout << "not found a game to remove with that name! \nplease try again\n";
     }
 }
 void find_product(product *&products, int &size, int &capacity)
 {
     system("cls");
-    cout<<"please enter the name of the product you want to find."<<endl;
+    cout << "please enter the name of the product you want to find." << endl;
     string a;
-    cin>>a;
-    int b=0;
-    for(int i=0;i<size;i++){
-        if(products[i].name == a){
-            cout<< "your product has been founded!\n"
-                <<i+1<<"."<<products[i].name<<endl<<"category:"<<products[i].category<<endl<<"price:"<<products[i].price<<endl<<"inventory:"<<products[i].inventory<<endl;
-                b++;
+    cin >> a;
+    int b = 0;
+    for (int i = 0; i < size; i++)
+    {
+        if (products[i].name == a)
+        {
+            cout << "your product has been founded!\n"
+                 << i + 1 << "." << products[i].name << endl
+                 << "category:" << products[i].category << endl
+                 << "price:" << products[i].price << endl
+                 << "inventory:" << products[i].inventory << endl;
+            b++;
         }
     }
-    if(b==0){
-        cout<<"no products found!"<<endl;
+    if (b == 0)
+    {
+        cout << "no products found!" << endl;
     }
+}
+void total_value(product *&products, int &size, int &capacity)
+{
+    system("cls");
+    int t = 0;
+    for (int i = 0; i < size; i++)
+    {
+        t += products[i].inventory * products[i].price;
+    }
+    cout << "the total value of the products of shop is: " << t << endl;
 }
 void show_products(product *&products, int &size, int &capacity)
 {
@@ -147,6 +164,8 @@ void admin_menu(product *&products, int &size, int &capacity)
     }
     case 4:
     {
+        total_value(products, size, capacity);
+        admin_menu(products, size, capacity);
     }
     case 5:
     {
