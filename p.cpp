@@ -9,6 +9,17 @@ struct product
     int price;
     int inventory;
 };
+void add_product(product *&products, int &size, int &capacity);
+void remove_product(product *&products, int &size, int &capacity);
+void find_product(product *&products, int &size, int &capacity);
+void total_value(product *&products, int &size, int &capacity);
+void charge_shop_wallet(int *wallet);
+void shop_wallet(int *wallet);
+void product_inventory(product *&products, int &size, int &capacity);
+void show_products(product *&products, int &size, int &capacity);
+void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet);
+void customer_menu();
+void public_menu(product *&products, int &size, int &capacity, int *sh_wallet);
 void add_product(product *&products, int &size, int &capacity)
 {
     system("cls");
@@ -83,11 +94,13 @@ void find_product(product *&products, int &size, int &capacity)
     {
         if (products[i].name == a)
         {
-            cout << "your product has been founded!\n"
-                 << i + 1 << "." << products[i].name << endl
-                 << "category:" << products[i].category << endl
-                 << "price:" << products[i].price << endl
-                 << "inventory:" << products[i].inventory << endl;
+            cout << "your product has been founded!\n";
+            //          << i + 1 << "." << products[i].name << endl
+            //          << "category:" << products[i].category << endl
+            //          << "price:" << products[i].price << endl
+            //          << "inventory:" << products[i].inventory << endl;
+            cout << left << setw(16) << "|category" << left << setw(16) << "|name" << left << setw(16) << "|price" << left << setw(16) << "|inventory" << "|" << endl;
+            cout << "|" << left << setw(15) << products[i].category << "|" << left << setw(15) << products[i].name << "|" << left << setw(15) << products[i].price << "|" << left << setw(15) << products[i].inventory << "|" << endl;
             b++;
         }
     }
@@ -119,6 +132,15 @@ void shop_wallet(int *wallet)
     system("cls");
     cout << "shop balance: " << *wallet << endl;
 }
+void product_inventory(product *&products, int &size, int &capacity)
+{
+    system("cls");
+    for (int i = 0; i < size; i++)
+    {
+        cout << "product: " << products[i].name << endl
+             << "inventory: " << products[i].inventory << endl;
+    }
+}
 void show_products(product *&products, int &size, int &capacity)
 {
     system("cls");
@@ -144,15 +166,16 @@ void show_products(product *&products, int &size, int &capacity)
 void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
 {
     // system("cls");
-    cout << "1.add a product" << endl
-         << "2.remove a product" << endl
-         << "3.find a product" << endl
-         << "4.total value of products" << endl
-         << "5.charging shops wallet " << endl
-         << "6.shops balance" << endl
-         << "7.products inventory" << endl
-         << "8.info of the products" << endl
-         << "whitch one do you want to do?" << endl;
+    cout << "1.Add a product" << endl
+         << "2.Remove a product" << endl
+         << "3.Find a product by searching the name" << endl
+         << "4.Total value of products" << endl
+         << "5.Charging shops wallet " << endl
+         << "6.Shops balance" << endl
+         << "7.Products inventory" << endl
+         << "8.Show info of the all products" << endl
+         << "9.Back to the main menu" << endl
+         << "Whitch one do you want to do?" << endl;
     int a;
     cin >> a;
     switch (a)
@@ -179,19 +202,25 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
     {
         total_value(products, size, capacity);
         admin_menu(products, size, capacity, sh_wallet);
+        break;
     }
     case 5:
     {
         charge_shop_wallet(sh_wallet);
         admin_menu(products, size, capacity, sh_wallet);
+        break;
     }
     case 6:
     {
         shop_wallet(sh_wallet);
         admin_menu(products, size, capacity, sh_wallet);
+        break;
     }
     case 7:
     {
+        product_inventory(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
+        break;
     }
     case 8:
     {
@@ -199,6 +228,9 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
         admin_menu(products, size, capacity, sh_wallet);
         break;
     }
+    case 9:
+        public_menu(products, size, capacity, sh_wallet);
+        break;
     default:
     {
     }
@@ -256,29 +288,33 @@ void customer_menu()
 void public_menu(product *&products, int &size, int &capacity, int *sh_wallet)
 {
     int a;
-    cout << "do you want to login as a" << endl
-         << "1.admin" << endl
-         << "2.customer" << endl;
+    cout << "Do you want to login as a" << endl
+         << "1.Admin" << endl
+         << "2.Customer" << endl;
     cin >> a;
     switch (a)
     {
     case 1:
     {
-        // cout<<"please enter password"<<endl<<": ";
-        // string pass;
-        // cin>>pass;
-        // if(pass=="admin1admin"){
-        //     cout<<"welcome to the shop management"<<endl;
-        admin_menu(products, size, capacity, sh_wallet);
-        // }
-        // else{
-        //     public_menu(products, size, capacity);
-        // }
+        cout << "please enter password" << endl
+             << ": ";
+        string pass;
+        cin >> pass;
+        if (pass == "admin1admin")
+        {
+            system("cls");
+            cout << "Welcome to the shop management" << endl;
+            admin_menu(products, size, capacity, sh_wallet);
+        }
+        else
+        {
+            public_menu(products, size, capacity, sh_wallet);
+        }
         break;
     }
     case 2:
     {
-        cout << "welcome to the shop";
+        cout << "Welcome to the shop";
         customer_menu();
         break;
     }
