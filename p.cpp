@@ -106,6 +106,19 @@ void total_value(product *&products, int &size, int &capacity)
     }
     cout << "the total value of the products of shop is: " << t << endl;
 }
+void charge_shop_wallet(int *wallet)
+{
+    system("cls");
+    int a;
+    cout << "how much do you want to charge?\nplease enter here: ";
+    cin >> a;
+    *wallet += a;
+}
+void shop_wallet(int *wallet)
+{
+    system("cls");
+    cout << "shop balance: " << *wallet << endl;
+}
 void show_products(product *&products, int &size, int &capacity)
 {
     system("cls");
@@ -128,15 +141,15 @@ void show_products(product *&products, int &size, int &capacity)
         }
     }
 }
-void admin_menu(product *&products, int &size, int &capacity)
+void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
 {
     // system("cls");
     cout << "1.add a product" << endl
          << "2.remove a product" << endl
          << "3.find a product" << endl
          << "4.total value of products" << endl
-         << "5.shop wallet charging" << endl
-         << "6.shop wallet inventory" << endl
+         << "5.charging shops wallet " << endl
+         << "6.shops balance" << endl
          << "7.products inventory" << endl
          << "8.info of the products" << endl
          << "whitch one do you want to do?" << endl;
@@ -147,31 +160,35 @@ void admin_menu(product *&products, int &size, int &capacity)
     case 1:
     {
         add_product(products, size, capacity);
-        admin_menu(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
         break;
     }
     case 2:
     {
         remove_product(products, size, capacity);
-        admin_menu(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
         break;
     }
     case 3:
     {
         find_product(products, size, capacity);
-        admin_menu(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
         break;
     }
     case 4:
     {
         total_value(products, size, capacity);
-        admin_menu(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
     }
     case 5:
     {
+        charge_shop_wallet(sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet);
     }
     case 6:
     {
+        shop_wallet(sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet);
     }
     case 7:
     {
@@ -179,7 +196,7 @@ void admin_menu(product *&products, int &size, int &capacity)
     case 8:
     {
         show_products(products, size, capacity);
-        admin_menu(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
         break;
     }
     default:
@@ -236,7 +253,7 @@ void customer_menu()
     }
     }
 }
-void public_menu(product *&products, int &size, int &capacity)
+void public_menu(product *&products, int &size, int &capacity, int *sh_wallet)
 {
     int a;
     cout << "do you want to login as a" << endl
@@ -252,7 +269,7 @@ void public_menu(product *&products, int &size, int &capacity)
         // cin>>pass;
         // if(pass=="admin1admin"){
         //     cout<<"welcome to the shop management"<<endl;
-        admin_menu(products, size, capacity);
+        admin_menu(products, size, capacity, sh_wallet);
         // }
         // else{
         //     public_menu(products, size, capacity);
@@ -276,7 +293,9 @@ int main()
     int size = 0;
     int capacity = 2;
     product *products = new product[capacity];
+    int s_wallet = 0;
+    int *sh_wallet = &s_wallet;
     system("cls");
-    public_menu(products, size, capacity);
+    public_menu(products, size, capacity, sh_wallet);
     delete[] products;
 }
