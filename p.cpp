@@ -9,6 +9,13 @@ struct product
     int price;
     int inventory;
 };
+struct shoping_cart
+{
+    string category;
+    string name;
+    int price;
+    int inventory;
+};
 void add_product(product *&products, int &size, int &capacity);
 void remove_product(product *&products, int &size, int &capacity);
 void find_product(product *&products, int &size, int &capacity);
@@ -17,9 +24,9 @@ void charge_shop_wallet(int *wallet);
 void shop_wallet(int *wallet);
 void product_inventory(product *&products, int &size, int &capacity);
 void show_products(product *&products, int &size, int &capacity);
-void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet);
-void customer_menu();
-void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet);
+void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity);
+void customer_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity);
+void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity);
 
 void add_product(product *&products, int &size, int &capacity)
 {
@@ -176,7 +183,61 @@ void customer_wallet(int *wallet)
     system("cls");
     cout << "your wallet balance is: " << *wallet << endl;
 }
-void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
+void show_cart(shoping_cart *&cart, int &cart_size, int &cart_capacity)
+{
+    system("cls");
+    if (cart_size == 0)
+    {
+        cout << "there is no products available in your shoping cart!" << endl;
+        return;
+    }
+    cout << left << setw(16) << "|category" << left << setw(16) << "|name" << left << setw(16) << "|price" << left << setw(16) << "|inventory" << "|" << endl;
+
+    for (int i = 0; i < cart_size; i++)
+    {
+        if (cart[i].inventory != 0)
+        {
+            cout << "|" << left << setw(15) << cart[i].category << "|" << left << setw(15) << cart[i].name << "|" << left << setw(15) << cart[i].price << "|" << left << setw(15) << cart[i].inventory << "|" << endl;
+        }
+    }
+}
+void add_to_cart(product *&products, int &size, int &capcity, shoping_cart *&cart, int &cart_size, int &cart_capacity)
+{
+    system("cls");
+    cout << "enter the name of the product you want to add to your shoping cart:\n";
+    string name;
+    cin >> name;
+    for (int i = 0; i < size; i++)
+    {
+
+        if (products[i].name == name)
+        {
+            cout << "enter the inventory to add to the cart between: 1 to " << products[i].inventory << endl;
+            int inventory;
+            cin >> inventory;
+            if (inventory > 0)
+            {
+            }
+            if (cart_size == cart_capacity)
+            {
+                cart_capacity += 1;
+                shoping_cart *new_cart = new shoping_cart[cart_capacity];
+                for (int i = 0; i < cart_size; i++)
+                {
+                    new_cart[i] = cart[i];
+                }
+                delete[] cart;
+                cart = new_cart;
+            }
+            cart[cart_size].category = products[i].category;
+            cart[cart_size].name = products[i].name;
+            cart[cart_size].price = products[i].price;
+            cart[cart_size].inventory = inventory;
+            cart_size++;
+        }
+    }
+}
+void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
     // system("cls");
     cout << "1.Add a product" << endl
@@ -196,69 +257,70 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
     case 1:
     {
         add_product(products, size, capacity);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 2:
     {
         remove_product(products, size, capacity);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 3:
     {
         find_product(products, size, capacity);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 4:
     {
         total_value(products, size, capacity);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 5:
     {
         charge_shop_wallet(sh_wallet);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 6:
     {
         shop_wallet(sh_wallet);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 7:
     {
         product_inventory(products, size, capacity);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 8:
     {
         show_products(products, size, capacity);
-        admin_menu(products, size, capacity, sh_wallet);
+        admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 9:
-        public_menu(products, size, capacity, sh_wallet, nullptr);
+        public_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     default:
     {
     }
     }
 }
-void customer_menu(product *&products, int &size, int &capacity, int *cu_wallet)
+void customer_menu(product *&products, int &size, int &capacity, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
     // system("cls");
     cout << "1.Products inventory" << endl
          << "2.Find a product by searching the name" << endl
          << "3.Charging wallet" << endl
          << "4.Wallet balance" << endl
-         << "5.shopping cart" << endl
-         << "6.Buy a product" << endl
-         << "7.show products by category" << endl;
+         << "5.show shopping cart" << endl
+         << "6.add a product to the shoping card" << endl
+         << "7.Buy a product" << endl
+         << "8.show products by category" << endl;
     int a;
     cin >> a;
     switch (a)
@@ -266,30 +328,38 @@ void customer_menu(product *&products, int &size, int &capacity, int *cu_wallet)
     case 1:
     {
         product_inventory(products, size, capacity);
-        customer_menu(products, size, capacity, cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 2:
     {
         find_product(products, size, capacity);
-        customer_menu(products, size, capacity, cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     case 3:
     {
         charge_c_wallt(cu_wallet);
-        customer_menu(products, size, capacity, cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
+        break;
     }
     case 4:
     {
         customer_wallet(cu_wallet);
-        customer_menu(products, size, capacity, cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
+        break;
     }
     case 5:
     {
+        show_cart(cart, cart_size, cart_capacity);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
+        break;
     }
     case 6:
     {
+        add_to_cart(products, size, capacity, cart, cart_size, cart_capacity);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
+        break;
     }
     case 7:
     {
@@ -303,8 +373,9 @@ void customer_menu(product *&products, int &size, int &capacity, int *cu_wallet)
     }
     }
 }
-void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet)
+void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
+    system("cls");
     int a;
     cout << "Do you want to login as a" << endl
          << "1.Admin" << endl
@@ -322,18 +393,18 @@ void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, i
         {
             system("cls");
             cout << "Welcome to the shop management" << endl;
-            admin_menu(products, size, capacity, sh_wallet);
+            admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         }
         else
         {
-            public_menu(products, size, capacity, sh_wallet, sh_wallet);
+            public_menu(products, size, capacity, sh_wallet, sh_wallet, cart, cart_size, cart_capacity);
         }
         break;
     }
     case 2:
     {
         cout << "Welcome to the shop\n";
-        customer_menu(products, size, capacity, cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     default:
@@ -351,7 +422,11 @@ int main()
     int *sh_wallet = &s_wallet;
     int c_wallet = 1000;
     int *cu_wallet = &c_wallet;
+    int cart_size = 0;
+    int cart_capacity = 2;
+    shoping_cart *cart = new shoping_cart[cart_capacity];
     system("cls");
-    public_menu(products, size, capacity, sh_wallet, cu_wallet);
+    public_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
     delete[] products;
+    delete[] cart;
 }
