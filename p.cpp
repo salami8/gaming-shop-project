@@ -19,7 +19,8 @@ void product_inventory(product *&products, int &size, int &capacity);
 void show_products(product *&products, int &size, int &capacity);
 void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet);
 void customer_menu();
-void public_menu(product *&products, int &size, int &capacity, int *sh_wallet);
+void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet);
+
 void add_product(product *&products, int &size, int &capacity)
 {
     system("cls");
@@ -137,7 +138,7 @@ void product_inventory(product *&products, int &size, int &capacity)
     system("cls");
     for (int i = 0; i < size; i++)
     {
-        cout << i + 1 << ".product: " << products[i].name < < < < "| inventory: " << products[i].inventory << endl;
+        cout << i + 1 << ".product: " << products[i].name << "| inventory: " << products[i].inventory << endl;
     }
 }
 void show_products(product *&products, int &size, int &capacity)
@@ -161,6 +162,19 @@ void show_products(product *&products, int &size, int &capacity)
             cout << "|" << left << setw(15) << products[i].category << "|" << left << setw(15) << products[i].name << "|" << left << setw(15) << products[i].price << "|" << left << setw(15) << products[i].inventory << "|" << endl;
         }
     }
+}
+void charge_c_wallt(int *wallet)
+{
+    system("cls");
+    int a;
+    cout << "how much do you want to charge?\nplease enter here: ";
+    cin >> a;
+    *wallet += a;
+}
+void customer_wallet(int *wallet)
+{
+    system("cls");
+    cout << "your wallet balance is: " << *wallet << endl;
 }
 void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
 {
@@ -228,14 +242,14 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
         break;
     }
     case 9:
-        public_menu(products, size, capacity, sh_wallet);
+        public_menu(products, size, capacity, sh_wallet, nullptr);
         break;
     default:
     {
     }
     }
 }
-void customer_menu(product *&products, int &size, int &capacity)
+void customer_menu(product *&products, int &size, int &capacity, int *cu_wallet)
 {
     // system("cls");
     cout << "1.Products inventory" << endl
@@ -252,20 +266,24 @@ void customer_menu(product *&products, int &size, int &capacity)
     case 1:
     {
         product_inventory(products, size, capacity);
-        customer_menu(products, size, capacity);
+        customer_menu(products, size, capacity, cu_wallet);
         break;
     }
     case 2:
     {
         find_product(products, size, capacity);
-        customer_menu(products, size, capacity);
+        customer_menu(products, size, capacity, cu_wallet);
         break;
     }
     case 3:
     {
+        charge_c_wallt(cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet);
     }
     case 4:
     {
+        customer_wallet(cu_wallet);
+        customer_menu(products, size, capacity, cu_wallet);
     }
     case 5:
     {
@@ -285,7 +303,7 @@ void customer_menu(product *&products, int &size, int &capacity)
     }
     }
 }
-void public_menu(product *&products, int &size, int &capacity, int *sh_wallet)
+void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet)
 {
     int a;
     cout << "Do you want to login as a" << endl
@@ -308,14 +326,14 @@ void public_menu(product *&products, int &size, int &capacity, int *sh_wallet)
         }
         else
         {
-            public_menu(products, size, capacity, sh_wallet);
+            public_menu(products, size, capacity, sh_wallet, sh_wallet);
         }
         break;
     }
     case 2:
     {
         cout << "Welcome to the shop\n";
-        customer_menu(products, size, capacity);
+        customer_menu(products, size, capacity, cu_wallet);
         break;
     }
     default:
@@ -331,7 +349,9 @@ int main()
     product *products = new product[capacity];
     int s_wallet = 0;
     int *sh_wallet = &s_wallet;
+    int c_wallet = 1000;
+    int *cu_wallet = &c_wallet;
     system("cls");
-    public_menu(products, size, capacity, sh_wallet);
+    public_menu(products, size, capacity, sh_wallet, cu_wallet);
     delete[] products;
 }
