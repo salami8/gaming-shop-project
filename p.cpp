@@ -137,8 +137,7 @@ void product_inventory(product *&products, int &size, int &capacity)
     system("cls");
     for (int i = 0; i < size; i++)
     {
-        cout << "product: " << products[i].name << endl
-             << "inventory: " << products[i].inventory << endl;
+        cout << i + 1 << ".product: " << products[i].name < < < < "| inventory: " << products[i].inventory << endl;
     }
 }
 void show_products(product *&products, int &size, int &capacity)
@@ -236,13 +235,13 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet)
     }
     }
 }
-void customer_menu()
+void customer_menu(product *&products, int &size, int &capacity)
 {
     // system("cls");
-    cout << "1.products inventory" << endl
-         << "2.find a product" << endl
-         << "3.top up wallet" << endl
-         << "4.balance of money" << endl
+    cout << "1.Products inventory" << endl
+         << "2.Find a product by searching the name" << endl
+         << "3.Charging wallet" << endl
+         << "4.Wallet balance" << endl
          << "5.shopping cart" << endl
          << "6.Buy a product" << endl
          << "7.show products by category" << endl;
@@ -252,13 +251,14 @@ void customer_menu()
     {
     case 1:
     {
-        cout << "1" << endl
-             << "11";
+        product_inventory(products, size, capacity);
+        customer_menu(products, size, capacity);
         break;
     }
     case 2:
     {
-        cout << "2";
+        find_product(products, size, capacity);
+        customer_menu(products, size, capacity);
         break;
     }
     case 3:
@@ -314,8 +314,8 @@ void public_menu(product *&products, int &size, int &capacity, int *sh_wallet)
     }
     case 2:
     {
-        cout << "Welcome to the shop";
-        customer_menu();
+        cout << "Welcome to the shop\n";
+        customer_menu(products, size, capacity);
         break;
     }
     default:
