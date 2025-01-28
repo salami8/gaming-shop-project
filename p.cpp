@@ -272,6 +272,32 @@ void buy_all(int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capa
         *cu_wallet = *cu_wallet - a;
     }
 }
+void show_by_category(product *&products, int &size, int &capacity)
+{
+    system("cls");
+    string a;
+    cout << "whitch category do you want to see its products?\n";
+    cin >> a;
+    int b = 0;
+    cout << left << setw(16) << "|category" << left << setw(16) << "|name" << left << setw(16) << "|price" << left << setw(16) << "|inventory" << "|" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        if (a == products[i].category)
+        {
+            // cout <<"category: " products[i].category<<"|name"
+            if (products[i].inventory != 0)
+            {
+                cout << "|" << left << setw(15) << products[i].category << "|" << left << setw(15) << products[i].name << "|" << left << setw(15) << products[i].price << "|" << left << setw(15) << products[i].inventory << "|" << endl;
+            }
+            b++;
+        }
+    }
+    if (b == 0)
+    {
+        cout << "|" << left << setw(15) << "/:" << "|" << left << setw(15) << "/:" << "|" << left << setw(15) << "/:" << "|" << left << setw(15) << "/:" << "|" << endl;
+        cout << "there is no product exist in this category!\n";
+    }
+}
 void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
     // system("cls");
@@ -409,6 +435,9 @@ void customer_menu(product *&products, int &size, int &capacity, int *sh_wallet,
     }
     case 8:
     {
+        show_by_category(products, size, capacity);
+        customer_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
+        break;
     }
     case 9:
     {
