@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
+#include <windows.h>
 using namespace std;
 struct product
 {
@@ -48,21 +49,135 @@ void add_product(product *&products, int &size, int &capacity)
         products = newproducts;
     }
     cout << "please enter the details of the product which you want to add" << endl
-         << "game-console-monitor-headset\n"
+         << "whitch category do you want to add a product in?(enter its number)\n";
+    Sleep(800);
+    cout << "1.game\n2.console\n3.monitor\n4.headset\n"
          << "category: ";
-    cin >> products[size].category;
-    cout << "name: ";
-    cin >> products[size].name;
-    cout << "price: ";
-    cin >> products[size].price;
-    cout << "inventory: ";
-    cin >> products[size].inventory;
+    int a;
+    cin >> a;
+    // cin >> products[size].category;
+    switch (a)
+    {
+    case 1:
+        products[size].category = "game";
+        Sleep(800);
+        cout << "name: ";
+        cin >> products[size].name;
+        Sleep(800);
+        cout << "price: ";
+        cin >> products[size].price;
+        if (products[size].price <= 0)
+        {
+            cout << "the price of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "price: ";
+            cin >> products[size].price;
+        }
+        Sleep(800);
+        cout << "inventory: ";
+        cin >> products[size].inventory;
+        if (products[size].inventory <= 0)
+        {
+            cout << "the inventory of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "inventory: ";
+            cin >> products[size].inventory;
+        }
+        size++;
+        break;
+    case 2:
+        products[size].category = "console";
+        Sleep(800);
+        cout << "name: ";
+        cin >> products[size].name;
 
-    size++;
+        Sleep(800);
+        cout << "price: ";
+        cin >> products[size].price;
+        if (products[size].price <= 0)
+        {
+            cout << "the price of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "price: ";
+            cin >> products[size].price;
+        }
+        Sleep(800);
+        cout << "inventory: ";
+        cin >> products[size].inventory;
+        if (products[size].inventory <= 0)
+        {
+            cout << "the inventory of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "inventory: ";
+            cin >> products[size].inventory;
+        }
+        size++;
+        break;
+    case 3:
+        products[size].category = "monitor";
+        Sleep(800);
+        cout << "name: ";
+        cin >> products[size].name;
+        Sleep(800);
+        cout << "price: ";
+        cin >> products[size].price;
+        if (products[size].price <= 0)
+        {
+            cout << "the price of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "price: ";
+            cin >> products[size].price;
+        }
+        Sleep(800);
+        cout << "inventory: ";
+        cin >> products[size].inventory;
+        if (products[size].inventory <= 0)
+        {
+            cout << "the inventory of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "inventory: ";
+            cin >> products[size].inventory;
+        }
+        size++;
+        break;
+    case 4:
+        products[size].category = "headset";
+        Sleep(800);
+        cout << "name: ";
+        cin >> products[size].name;
+        Sleep(800);
+        cout << "price: ";
+        cin >> products[size].price;
+        if (products[size].price <= 0)
+        {
+            cout << "the price of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "price: ";
+            cin >> products[size].price;
+        }
+        Sleep(800);
+        cout << "inventory: ";
+        cin >> products[size].inventory;
+        if (products[size].inventory <= 0)
+        {
+            cout << "the inventory of product should be between larger than 1\n";
+            Sleep(2000);
+            cout << "inventory: ";
+            cin >> products[size].inventory;
+        }
+        size++;
+        break;
+    default:
+        system("cls");
+        cout << "please enter a number(1-2-3-4)\n";
+        Sleep(1500);
+        break;
+    }
 }
 void remove_product(product *&products, int &size, int &capacity)
 {
     system("cls");
+    Sleep(800);
     cout << "please enter the name of the product you want to remove?" << endl;
     string a;
     cin >> a;
@@ -71,29 +186,54 @@ void remove_product(product *&products, int &size, int &capacity)
     {
         if (a == products[i].name)
         {
-            cout << "your product has been founded!" << endl
-                 << i + 1 << "." << products[i].name << endl
-                 << "the product inventory is: " << products[i].inventory << endl
-                 << "do you want to remove all of it?\n1.yes\n2.no" << endl;
+            cout << "your product has been founded!" << endl;
+            Sleep(800);
+            cout << i + 1 << "." << products[i].name << endl;
+            Sleep(800);
+            cout << "the product inventory is: " << products[i].inventory << endl;
+            Sleep(800);
+            cout << "do you want to remove all of it?\n1.yes\n2.no" << endl;
             int b;
             cin >> b;
             if (b == 1)
             {
                 products[i].inventory = 0;
+                system("cls");
             }
-            else
+            else if (b == 2)
             {
                 cout << "please enter your considered number between (1 to " << products[i].inventory - 1 << ")" << endl;
                 int c;
                 cin >> c;
-                products[i].inventory = products[i].inventory - c;
+                if (c > 0 && c < products[i].inventory - 1)
+                {
+                    products[i].inventory = products[i].inventory - c;
+                    system("cls");
+                }
+                else
+                {
+                    cout << "wrong input!\n";
+                    cout << "please enter your considered number between (1 to " << products[i].inventory - 1 << ")" << endl;
+                    int c;
+                    cin >> c;
+                    products[i].inventory = products[i].inventory - c;
+                    system("cls");
+                }
+            }
+            else
+            {
+                cout << "you entered wrong number!\n";
+                Sleep(1000);
+                remove_product(products, size, capacity);
             }
             c++;
         }
     }
     if (c == 0)
     {
-        cout << "not found a game to remove with that name! \nplease try again\n";
+        cout << "not found a game to remove with that name! \n";
+        Sleep(1200);
+        system("cls");
     }
 }
 void find_product(product *&products, int &size, int &capacity)
@@ -107,11 +247,9 @@ void find_product(product *&products, int &size, int &capacity)
     {
         if (products[i].name == a)
         {
+            system("cls");
+            Sleep(1000);
             cout << "your product has been founded!\n";
-            //          << i + 1 << "." << products[i].name << endl
-            //          << "category:" << products[i].category << endl
-            //          << "price:" << products[i].price << endl
-            //          << "inventory:" << products[i].inventory << endl;
             cout << left << setw(16) << "|category" << left << setw(16) << "|name" << left << setw(16) << "|price" << left << setw(16) << "|inventory" << "|" << endl;
             cout << "|" << left << setw(15) << products[i].category << "|" << left << setw(15) << products[i].name << "|" << left << setw(15) << products[i].price << "|" << left << setw(15) << products[i].inventory << "|" << endl;
             b++;
@@ -120,6 +258,8 @@ void find_product(product *&products, int &size, int &capacity)
     if (b == 0)
     {
         cout << "no products found!" << endl;
+        Sleep(1000);
+        system("cls");
     }
 }
 void total_value(product *&products, int &size, int &capacity)
@@ -147,10 +287,18 @@ void shop_wallet(int *wallet)
 }
 void product_inventory(product *&products, int &size, int &capacity)
 {
-    system("cls");
+    int a = 0;
     for (int i = 0; i < size; i++)
     {
-        cout << i + 1 << ".product: " << products[i].name << "| inventory: " << products[i].inventory << endl;
+        if (products[i].inventory > 0)
+        {
+            cout << i + 1 << ".product: " << products[i].name << "| inventory: " << products[i].inventory << endl;
+            a++;
+        }
+    }
+    if (a == 0)
+    {
+        cout << "there is no product to show!\n";
     }
 }
 void show_products(product *&products, int &size, int &capacity)
@@ -161,10 +309,6 @@ void show_products(product *&products, int &size, int &capacity)
         cout << "no products available" << endl;
         return;
     }
-    // for(int i=0;i<size;i++){
-    //     cout<<i+1<<"."
-    //         << products[i].category<<endl;
-    // }
     cout << left << setw(16) << "|category" << left << setw(16) << "|name" << left << setw(16) << "|price" << left << setw(16) << "|inventory" << "|" << endl;
 
     for (int i = 0; i < size; i++)
@@ -190,7 +334,6 @@ void customer_wallet(int *wallet)
 }
 void show_cart(shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
-    system("cls");
     if (cart_size == 0)
     {
         cout << "there is no products available in your shoping cart!" << endl;
@@ -208,7 +351,6 @@ void show_cart(shoping_cart *&cart, int &cart_size, int &cart_capacity)
 }
 void add_to_cart(product *&products, int &size, int &capcity, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
-    system("cls");
     cout << "enter the name of the product you want to add to your shoping cart:\n";
     string name;
     cin >> name;
@@ -284,7 +426,6 @@ void show_by_category(product *&products, int &size, int &capacity)
     {
         if (a == products[i].category)
         {
-            // cout <<"category: " products[i].category<<"|name"
             if (products[i].inventory != 0)
             {
                 cout << "|" << left << setw(15) << products[i].category << "|" << left << setw(15) << products[i].name << "|" << left << setw(15) << products[i].price << "|" << left << setw(15) << products[i].inventory << "|" << endl;
@@ -301,16 +442,27 @@ void show_by_category(product *&products, int &size, int &capacity)
 void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
     // system("cls");
-    cout << "1.Add a product" << endl
-         << "2.Remove a product" << endl
-         << "3.Find a product by searching the name" << endl
-         << "4.Total value of products" << endl
-         << "5.Charging shops wallet " << endl
-         << "6.Shops balance" << endl
-         << "7.Products inventory" << endl
-         << "8.Show info of the all products" << endl
-         << "9.Back to the main menu" << endl
-         << "Whitch one do you want to do?" << endl;
+    cout << "Whitch one do you want to do?" << endl;
+    Sleep(1000);
+    cout << "1.Add a product" << endl;
+    Sleep(100);
+    cout << "2.Remove a product" << endl;
+    Sleep(100);
+    cout << "3.Find a product by searching the name" << endl;
+    Sleep(100);
+    cout << "4.Total value of products" << endl;
+    Sleep(100);
+    cout << "5.Charging shops wallet " << endl;
+    Sleep(100);
+    cout << "6.Shops balance" << endl;
+    Sleep(100);
+    cout << "7.Products inventory" << endl;
+    Sleep(100);
+    cout << "8.Show info of the all products" << endl;
+    Sleep(100);
+    cout << "9.Back to the main menu" << endl;
+    Sleep(100);
+
     int a;
     cin >> a;
     switch (a)
@@ -318,6 +470,7 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, in
     case 1:
     {
         add_product(products, size, capacity);
+        system("cls");
         admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
@@ -353,6 +506,7 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, in
     }
     case 7:
     {
+        system("cls");
         product_inventory(products, size, capacity);
         admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
@@ -374,15 +528,27 @@ void admin_menu(product *&products, int &size, int &capacity, int *sh_wallet, in
 void customer_menu(product *&products, int &size, int &capacity, int *sh_wallet, int *cu_wallet, shoping_cart *&cart, int &cart_size, int &cart_capacity)
 {
     // system("cls");
-    cout << "1.Products inventory" << endl
-         << "2.Find a product by searching the name" << endl
-         << "3.Charging wallet" << endl
-         << "4.Wallet balance" << endl
-         << "5.Show shopping cart" << endl
-         << "6.Add a product to the shoping cart" << endl
-         << "7.Buy all the products in the shoping cart" << endl
-         << "8.Show products by category" << endl
-         << "9.Back to main menu" << endl;
+    cout << "Whitch one do you want to do?" << endl;
+    Sleep(1000);
+    cout << "1.Products inventory" << endl;
+    Sleep(100);
+    cout << "2.Find a product by searching the name" << endl;
+    Sleep(100);
+    cout << "3.Charging wallet" << endl;
+    Sleep(100);
+    cout << "4.Wallet balance" << endl;
+    Sleep(100);
+    cout << "5.Show shopping cart" << endl;
+    Sleep(100);
+    cout << "6.Add a product to the shoping cart" << endl;
+    Sleep(100);
+    cout << "7.Buy all the products in the shoping cart" << endl;
+    Sleep(100);
+    cout << "8.Show products by category" << endl;
+    Sleep(100);
+    cout << "9.Back to main menu" << endl;
+    Sleep(100);
+
     int a;
     cin >> a;
     switch (a)
@@ -428,7 +594,6 @@ void customer_menu(product *&products, int &size, int &capacity, int *sh_wallet,
     }
     case 7:
     {
-        // customer_wallet(cu_wallet);
         buy_all(cu_wallet, cart, cart_size, cart_capacity, sh_wallet, products, size, capacity);
         customer_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
@@ -457,6 +622,7 @@ void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, i
          << "1.Admin" << endl
          << "2.Customer" << endl;
     cin >> a;
+    system("cls");
     switch (a)
     {
     case 1:
@@ -468,23 +634,51 @@ void public_menu(product *&products, int &size, int &capacity, int *sh_wallet, i
         if (pass == "admin1admin")
         {
             system("cls");
-            cout << "Welcome to the shop management" << endl;
+            cout << "correct password!\nplease wait";
+            Sleep(800);
+            cout << ".";
+            Sleep(800);
+            cout << ".";
+            Sleep(800);
+            cout << ".";
+            Sleep(800);
+            system("cls");
+            cout << "Welcome to the shop management!" << endl;
+            Sleep(1500);
+            system("cls");
             admin_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         }
         else
         {
+            system("cls");
+            cout << "wrong password!\n";
+            Sleep(1000);
             public_menu(products, size, capacity, sh_wallet, sh_wallet, cart, cart_size, cart_capacity);
         }
         break;
     }
     case 2:
     {
-        cout << "Welcome to the shop\n";
+        cout << "please wait";
+        Sleep(800);
+        cout << ".";
+        Sleep(800);
+        cout << ".";
+        Sleep(800);
+        cout << ".";
+        Sleep(800);
+        system("cls");
+        cout << "Welcome to the shop!\n";
+        Sleep(1500);
+        system("cls");
         customer_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     default:
     {
+        cout << "enter a number (1 or 2)!\n";
+        Sleep(1500);
+        public_menu(products, size, capacity, sh_wallet, cu_wallet, cart, cart_size, cart_capacity);
         break;
     }
     }
